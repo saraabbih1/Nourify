@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class HistoriqueAction extends Model
 {
-    //
+    protected $fillable = [
+        'action',
+        'user_id'
+    ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
