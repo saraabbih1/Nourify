@@ -9,13 +9,23 @@ return new class extends Migration
 /**
  * Run the migrations.
  */
-    public function up(): void
-    {
-        Schema::create('campagnes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+   public function up()
+{
+    Schema::create('campagnes', function (Blueprint $table) {
+        $table->id();
+        $table->string('titre');
+        $table->text('description');
+        $table->double('objectif');
+        $table->double('montant_collecte')->default(0);
+        $table->string('statut')->default('active');
+
+        $table->foreignId('beneficiaire_id')
+              ->constrained('users')
+              ->onDelete('cascade');
+
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
