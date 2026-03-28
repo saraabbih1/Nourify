@@ -59,4 +59,45 @@ class DonController extends Controller
 
    
 
-    
+    // accepter don beneficiaire
+    public function accepter($id)
+    {
+        $don = Don::findOrFail($id);
+
+        if (Auth::user()->role != 'beneficiaire') {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $don->update(['statut' => 'accepte']);
+
+        return $don;
+    }
+
+    // refuser don
+    public function refuser($id)
+    {
+        $don = Don::findOrFail($id);
+
+        if (Auth::user()->role != 'beneficiaire') {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $don->update(['statut' => 'refuse']);
+
+        return $don;
+    }
+
+    // distribuer don
+    public function distribuer($id)
+    {
+        $don = Don::findOrFail($id);
+
+        if (Auth::user()->role != 'beneficiaire') {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $don->update(['statut' => 'distribue']);
+
+        return $don;
+    }
+}
