@@ -110,7 +110,11 @@ class DonController extends Controller
             return response()->json(['error' => 'Don must be accepted first'], 400);
         }
         $don->update(['statut' => 'distribue']);
-
+        Notification::create([
+            'message' => 'Votre don a été distribué',
+            'user_id' => $don->donateur_id,
+            'lu' => false
+        ]);
         return $don;
     }
 }
