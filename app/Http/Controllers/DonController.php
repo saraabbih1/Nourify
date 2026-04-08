@@ -90,7 +90,11 @@ class DonController extends Controller
         }
 
         $don->update(['statut' => 'refuse']);
-
+        Notification::create([
+            'message' => 'Votre don a été refusé',
+            'user_id' => $don->donateur_id,
+            'lu' => false
+        ]);
         return $don;
     }
 
