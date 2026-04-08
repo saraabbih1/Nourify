@@ -42,8 +42,10 @@ class DonController extends Controller
     public function update(Request $request, $id)
     {
         $don = Don::findOrFail($id);
-        $don->update($request->all());
-
+        if ($don->donateur_id != Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $don->update($request->only('montant'));
         return response()->json($don);
     }
 
@@ -57,7 +59,7 @@ class DonController extends Controller
         ]);
     }
 
-   
+
 
     // accepter don beneficiaire
     public function accepter($id)
