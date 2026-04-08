@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Don;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,11 @@ class DonController extends Controller
         }
 
         $don->update(['statut' => 'accepte']);
-
+        Notification::create([
+            'message' => 'Votre don a été accepté',
+            'user_id' => $don->donateur_id,
+            'lu' => false
+        ]);
         return $don;
     }
 
@@ -97,7 +102,9 @@ class DonController extends Controller
         if (Auth::user()->role != 'beneficiaire') {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-
+        if ($don->statut != 'accepte') {
+            return response()->json(['error' => 'Don must be accepted first'], 400);
+        }
         $don->update(['statut' => 'distribue']);
 
         return $don;
