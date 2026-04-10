@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CampagneController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-notifications', [UserController::class, 'myNotifications']);
 });
 Route::resource('campagnes', CampagneController::class);
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
 
 require __DIR__ . '/auth.php';
