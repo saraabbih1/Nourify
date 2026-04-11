@@ -14,23 +14,24 @@ class CampagneController extends Controller
         return Campagne::all();
     }
    // creer une campagne
-    public function store(Request $request)
-    {
-        $request->validate([
-            'titre' => 'required',
-            'description' => 'required',
-            'objectif' => 'required|numeric'
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'titre' => 'required',
+        'description' => 'required',
+        'objectif' => 'required|numeric'
+    ]);
 
-        $campagne = Campagne::create([
-            'titre' => $request->titre,
-            'description' => $request->description,
-            'objectif' => $request->objectif,
-            'beneficiaire_id' => Auth::id()
-        ]);
+    Campagne::create([
+        'titre' => $request->titre,
+        'description' => $request->description,
+        'objectif' => $request->objectif,
+        'beneficiaire_id' => Auth::id()
+    ]);
 
-        return response()->json($campagne, 201);
-    }
+    return redirect()->route('dashboard', ['view' => 'campaigns'])
+                     ->with('success', 'Campagne créée avec succès');
+}
      //afficher une campagne by id
     public function show($id)
     {
