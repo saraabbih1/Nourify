@@ -2,7 +2,7 @@
 
     <div class="flex min-h-screen bg-gray-100">
 
-        <!-- SIDEBAR -->
+         {{-- SIDEBAR  --}}
         <aside class="w-64 bg-white shadow-lg p-5 hidden md:block">
             <h2 class="text-xl font-bold mb-6 text-blue-600">Nourify</h2>
 
@@ -17,6 +17,9 @@
                     class="block px-4 py-2 rounded hover:bg-gray-100">Notifications</a>
                 <a href="{{ route('dashboard', ['view' => 'create']) }}"
                     class="block px-4 py-2 rounded hover:bg-gray-100">Créer</a>
+                <a href="{{ route('dashboard', ['view' => 'historique']) }}">
+                    Historique
+                </a>
             </nav>
         </aside>
 
@@ -33,7 +36,7 @@
                 </div>
             </div>
 
-            <!--  HOME  -->
+              {{-- HOME   --}}
             @if($view == 'home')
 
                 <div class="grid md:grid-cols-3 gap-6 mb-6">
@@ -76,7 +79,7 @@
 
             @endif
 
-            <!--  CAMPAIGNS  -->
+              {{-- CAMPAIGNS   --}}
             @if($view == 'campaigns')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -119,7 +122,7 @@
 
             @endif
 
-            <!--  DONATIONS  -->
+              {{-- DONATIONS   --}}
             @if($view == 'donations')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -155,7 +158,7 @@
 
             @endif
 
-            <!--  NOTIFICATIONS  -->
+              {{-- NOTIFICATIONS   --}}
             @if($view == 'notifications')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -171,8 +174,23 @@
                 </div>
 
             @endif
+            {{-- HISTORIQUE --}}
+            @if($view == 'historique')
 
-            <!--  CREATE  -->
+                <div class="bg-white p-6 rounded shadow">
+                    <h2>Historique</h2>
+
+                    @foreach($historiques as $h)
+                        <div class="border p-2 mb-2">
+                            <p>{{ $h->action }}</p>
+                        </div>
+                    @endforeach
+
+                </div>
+
+            @endif
+
+            {{-- CREATE   --}}
             @if($view == 'create')
 
                 <div class="bg-white p-6 rounded-xl shadow max-w-md mx-auto">
