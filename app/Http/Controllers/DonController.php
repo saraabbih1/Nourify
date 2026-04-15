@@ -6,6 +6,7 @@ use App\Models\Don;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\HistoriqueAction;
 
 class DonController extends Controller
 {
@@ -77,6 +78,10 @@ class DonController extends Controller
             'user_id' => $don->donateur_id,
             'lu' => false
         ]);
+        HistoriqueAction::create([
+            'action' => 'Don accepté',
+            'user_id' => Auth::id()
+        ]);
         return $don;
     }
 
@@ -94,6 +99,10 @@ class DonController extends Controller
             'message' => 'Votre don a été refusé',
             'user_id' => $don->donateur_id,
             'lu' => false
+        ]);
+        HistoriqueAction::create([
+            'action' => 'Don REFUSE',
+            'user_id' => Auth::id()
         ]);
         return $don;
     }
@@ -114,6 +123,10 @@ class DonController extends Controller
             'message' => 'Votre don a été distribué',
             'user_id' => $don->donateur_id,
             'lu' => false
+        ]);
+        HistoriqueAction::create([
+            'action' => 'Don distribué',
+            'user_id' => Auth::id()
         ]);
         return $don;
     }

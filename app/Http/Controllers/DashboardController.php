@@ -7,6 +7,7 @@ use App\Models\Campagne;
 use App\Models\Notification;
 use App\Models\Don;
 use Illuminate\Support\Facades\Auth;
+use App\Models\HistoriqueAction;
 
 class DashboardController extends Controller
 {
@@ -24,7 +25,7 @@ class DashboardController extends Controller
         $totalDons = Don::count();
         $donations = Don::all();
         $totalAmount = Don::sum('montant');
-        $historiques = \App\Models\HistoriqueAction::latest()->get();
+        $historiques = HistoriqueAction::latest()->get();
         return view('dashboard', compact(
             'view',
             'campaigns',
