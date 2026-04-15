@@ -2,7 +2,7 @@
 
     <div class="flex min-h-screen bg-gray-100">
 
-         {{-- SIDEBAR  --}}
+        {{-- SIDEBAR --}}
         <aside class="w-64 bg-white shadow-lg p-5 hidden md:block">
             <h2 class="text-xl font-bold mb-6 text-blue-600">Nourify</h2>
 
@@ -17,16 +17,17 @@
                     class="block px-4 py-2 rounded hover:bg-gray-100">Notifications</a>
                 <a href="{{ route('dashboard', ['view' => 'create']) }}"
                     class="block px-4 py-2 rounded hover:bg-gray-100">Créer</a>
-                <a href="{{ route('dashboard', ['view' => 'historique']) }}">
+                <a href="{{ route('dashboard', ['view' => 'historique']) }}"
+                    class="block px-4 py-2 rounded hover:bg-gray-100">
                     Historique
                 </a>
             </nav>
         </aside>
 
-        <!-- MAIN -->
+        {{-- MAIN --}}
         <div class="flex-1 p-6">
 
-            <!-- TOPBAR -->
+            {{-- TOPBAR --}}
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-2xl font-bold">Dashboard</h1>
 
@@ -36,7 +37,7 @@
                 </div>
             </div>
 
-              {{-- HOME   --}}
+            {{-- HOME --}}
             @if($view == 'home')
 
                 <div class="grid md:grid-cols-3 gap-6 mb-6">
@@ -79,7 +80,7 @@
 
             @endif
 
-              {{-- CAMPAIGNS   --}}
+            {{-- CAMPAIGNS --}}
             @if($view == 'campaigns')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -122,7 +123,7 @@
 
             @endif
 
-              {{-- DONATIONS   --}}
+            {{-- DONATIONS --}}
             @if($view == 'donations')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -158,7 +159,7 @@
 
             @endif
 
-              {{-- NOTIFICATIONS   --}}
+            {{-- NOTIFICATIONS --}}
             @if($view == 'notifications')
 
                 <div class="bg-white p-6 rounded-xl shadow">
@@ -190,7 +191,7 @@
 
             @endif
 
-            {{-- CREATE   --}}
+            {{-- CREATE --}}
             @if($view == 'create')
 
                 <div class="bg-white p-6 rounded-xl shadow max-w-md mx-auto">
