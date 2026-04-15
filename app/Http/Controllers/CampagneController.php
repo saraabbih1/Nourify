@@ -39,22 +39,32 @@ class CampagneController extends Controller
     }
     
     //update 
-    public function update(Request $request, $id)
-    {
-        $campagne = Campagne::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    $campagne = Campagne::findOrFail($id);
 
-        $campagne->update($request->all());
+    $request->validate([
+        'titre' => 'required',
+        'description' => 'required',
+        'objectif' => 'required|numeric'
+    ]);
 
-        return response()->json($campagne);
-    }
+    $campagne->update([
+        'titre' => $request->titre,
+        'description' => $request->description,
+        'objectif' => $request->objectif,
+    ]);
+
+    return redirect()->route('dashboard', ['view' => 'campaigns'])
+        ->with('success', 'Campagne mise à jour avec succès');
+}
  
      //supprimer 
-    public function destroy($id)
-    {
-        Campagne::destroy($id);
+   public function destroy($id)
+{
+    Campagne::destroy($id);
 
-        return response()->json([
-            'message' => 'Campagne supprimée'
-        ]);
-    }
+    return redirect()->route('dashboard', ['view' => 'campaigns'])
+        ->with('success', 'Campagne supprimée avec succès');
+}
 }

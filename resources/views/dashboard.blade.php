@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <!-- ===================== HOME ===================== -->
+        <!--  HOME  -->
         @if($view == 'home')
 
         <div class="grid md:grid-cols-3 gap-6 mb-6">
@@ -45,14 +45,14 @@
 
             <div class="bg-white p-5 rounded-xl shadow">
                 <p class="text-gray-500">Total (MAD)</p>
-                <h2 class="text-2xl font-bold">{{ $donations->sum('amount') }}</h2>
+                <h2 class="text-2xl font-bold">{{ $donations->sum('montant') }}</h2>
             </div>
 
         </div>
 
         @endif
 
-        <!-- ===================== CAMPAIGNS ===================== -->
+        <!--  CAMPAIGNS  -->
         @if($view == 'campaigns')
 
         <div class="bg-white p-6 rounded-xl shadow">
@@ -94,7 +94,7 @@
 
         @endif
 
-        <!-- ===================== DONATIONS ===================== -->
+        <!--  DONATIONS  -->
         @if($view == 'donations')
 
         <div class="bg-white p-6 rounded-xl shadow">
@@ -105,8 +105,8 @@
             <div class="border p-4 rounded mb-3 flex justify-between items-center">
 
                 <div>
-                    <p class="font-bold">{{ $d->amount }} MAD</p>
-                    <p class="text-sm text-gray-500">{{ $d->status }}</p>
+                    <p class="font-bold">{{ $d->montant }} MAD</p>
+                    <p class="text-sm text-gray-500">{{ $d->statut }}</p>
                 </div>
 
                 <div class="flex gap-2">
@@ -130,7 +130,7 @@
 
         @endif
 
-        <!-- ===================== NOTIFICATIONS ===================== -->
+        <!--  NOTIFICATIONS  -->
         @if($view == 'notifications')
 
         <div class="bg-white p-6 rounded-xl shadow">
@@ -147,7 +147,7 @@
 
         @endif
 
-        <!-- ===================== CREATE ===================== -->
+        <!--  CREATE  -->
         @if($view == 'create')
 
         <div class="bg-white p-6 rounded-xl shadow max-w-md mx-auto">

@@ -17,18 +17,24 @@ class DashboardController extends Controller
         $campaigns = Campagne::with('dons')->latest()->get();
 
         $notifications = Notification::where('user_id', Auth::id())
-                            ->latest()
-                            ->get();
+            ->latest()
+            ->get();
 
         $totalCampaigns = Campagne::count();
         $totalDons = Don::count();
-
+        $donations = Don::all();
+        $totalAmount = Don::sum('montant');
+        $historiques = \App\Models\HistoriqueAction::latest()->get();
         return view('dashboard', compact(
             'view',
             'campaigns',
             'notifications',
             'totalCampaigns',
-            'totalDons'
+            'totalDons',
+            'donations',
+            'totalAmount',
+            'historiques'
+
         ));
     }
 }
