@@ -2,48 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Campagne;
 use App\Models\HistoriqueAction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CampagneController extends Controller
 {
-    // afficher tout les campagne  
-    public function index()
+    public function index(Request $request)
     {
-        return Campagne::all();
+        $campagnes = Campagne::latest()->get();
+
+        if ($request->wantsJson()) {
+            return $campagnes;
+        }
+
+        return view('campagnes.index', compact('campagnes'));
     }
-    // creer une campagne
+
+    public function create()
+    {
+        return view('campagnes.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'titre' => 'required',
             'description' => 'required',
-            'objectif' => 'required|numeric'
+            'objectif' => 'required|numeric',
         ]);
 
         Campagne::create([
             'titre' => $request->titre,
             'description' => $request->description,
             'objectif' => $request->objectif,
-            'beneficiaire_id' => Auth::id()
+            'beneficiaire_id' => Auth::id(),
         ]);
+
         HistoriqueAction::create([
-            'action' => 'Création campagne',
-            'user_id' => Auth::id()
+            'action' => 'Creation campagne',
+            'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('dashboard', ['view' => 'campaigns'])
-            ->with('success', 'Campagne créée avec succès');
-    }
-    //afficher une campagne by id
-    public function show($id)
-    {
-        return Campagne::findOrFail($id);
+        return redirect()->route('campagnes.index')
+            ->with('success', 'Campagne creee avec succes');
     }
 
-    //update 
+    public function show(Request $request, $id)
+    {
+        $campagne = Campagne::with('dons')->findOrFail($id);
+
+        if ($request->wantsJson()) {
+            return $campagne;
+        }
+
+        return view('campagnes.show', compact('campagne'));
+    }
+
+    public function edit($id)
+    {
+        $campagne = Campagne::findOrFail($id);
+        return view('campagnes.edit', compact('campagne'));
+    }
+
     public function update(Request $request, $id)
     {
         $campagne = Campagne::findOrFail($id);
@@ -51,7 +73,7 @@ class CampagneController extends Controller
         $request->validate([
             'titre' => 'required',
             'description' => 'required',
-            'objectif' => 'required|numeric'
+            'objectif' => 'required|numeric',
         ]);
 
         $campagne->update([
@@ -60,16 +82,15 @@ class CampagneController extends Controller
             'objectif' => $request->objectif,
         ]);
 
-        return redirect()->route('dashboard', ['view' => 'campaigns'])
-            ->with('success', 'Campagne mise à jour avec succès');
+        return redirect()->route('campagnes.index')
+            ->with('success', 'Campagne mise a jour avec succes');
     }
 
-    //supprimer 
     public function destroy($id)
     {
         Campagne::destroy($id);
 
-        return redirect()->route('dashboard', ['view' => 'campaigns'])
-            ->with('success', 'Campagne supprimée avec succès');
+        return redirect()->route('campagnes.index')
+            ->with('success', 'Campagne supprimee avec succes');
     }
 }
