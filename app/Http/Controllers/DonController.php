@@ -21,17 +21,24 @@ class DonController extends Controller
     {
         $request->validate([
             'montant' => 'required|numeric|min:1',
-            'campagne_id' => 'required|exists:campagnes,id'
+            'campagne_id' => 'required|exists:campagnes,id',
+            'type' => 'required|string|in:argent,nourriture,vetements,autre',
         ]);
 
         $don = Don::create([
             'montant' => $request->montant,
+            'type' => $request->type,
             'campagne_id' => $request->campagne_id,
             'donateur_id' => Auth::id(),
-            'statut' => 'propose'
+            'statut' => 'propose',
         ]);
 
-        return response()->json($don, 201);
+        if ($request->wantsJson()) {
+            return response()->json($don, 201);
+        }
+
+        return redirect()->route('dons.index')
+            ->with('success', 'Don cree avec succes.');
     }
 
     // afficher seul don by id 
