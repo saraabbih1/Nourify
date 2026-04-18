@@ -29,7 +29,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('campagnes', CampagneController::class);
+    Route::resource('campagnes', CampagneController::class)->only(['index', 'show']);
+    Route::resource('campagnes', CampagneController::class)
+        ->except(['index', 'show'])
+        ->middleware('role:beneficiaire,admin');
 
     Route::get('/dons', function () {
         $dons = Don::latest()->get();
@@ -39,13 +42,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/dons/create', function () {
         $campagnes = \App\Models\Campagne::latest()->get();
         return view('dons.create', compact('campagnes'));
-    })->name('dons.create');
+    })->middleware('role:donateur,admin')->name('dons.create');
 
-    Route::post('/dons', [DonController::class, 'store'])->name('dons.store');
+    Route::post('/dons', [DonController::class, 'store'])
+        ->middleware('role:donateur,admin')
+        ->name('dons.store');
 
-    Route::post('/dons/{id}/accepter', [DonController::class, 'accepter'])->name('dons.accepter');
-    Route::post('/dons/{id}/refuser', [DonController::class, 'refuser'])->name('dons.refuser');
-    Route::post('/dons/{id}/distribuer', [DonController::class, 'distribuer'])->name('dons.distribuer');
+    Route::post('/dons/{id}/accepter', [DonController::class, 'accepter'])
+        ->middleware('role:beneficiaire,admin')
+        ->name('dons.accepter');
+    Route::post('/dons/{id}/refuser', [DonController::class, 'refuser'])
+        ->middleware('role:beneficiaire,admin')
+        ->name('dons.refuser');
+    Route::post('/dons/{id}/distribuer', [DonController::class, 'distribuer'])
+        ->middleware('role:beneficiaire,admin')
+        ->name('dons.distribuer');
 
     Route::get('/notifications', function () {
         $notifications = Notification::where('user_id', auth()->id())->latest()->get();
@@ -62,12 +73,12 @@ Route::middleware('auth')->group(function () {
         $campaignsCount = \App\Models\Campagne::count();
         $donsCount = Don::count();
         return view('admin.index', compact('usersCount', 'campaignsCount', 'donsCount'));
-    })->name('admin.index');
+    })->middleware('role:admin')->name('admin.index');
 
     Route::get('/admin/users', function () {
         $users = User::latest()->get();
         return view('admin.users', compact('users'));
-    })->name('admin.users');
+    })->middleware('role:admin')->name('admin.users');
 
 });
 
