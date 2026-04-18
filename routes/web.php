@@ -20,12 +20,16 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/my-notifications', [UserController::class, 'myNotifications']);
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('campagnes', CampagneController::class);
 
     Route::get('/dons', function () {
         $dons = Don::latest()->get();
@@ -36,6 +40,12 @@ Route::middleware('auth')->group(function () {
         $campagnes = \App\Models\Campagne::latest()->get();
         return view('dons.create', compact('campagnes'));
     })->name('dons.create');
+
+    Route::post('/dons', [DonController::class, 'store'])->name('dons.store');
+
+    Route::post('/dons/{id}/accepter', [DonController::class, 'accepter'])->name('dons.accepter');
+    Route::post('/dons/{id}/refuser', [DonController::class, 'refuser'])->name('dons.refuser');
+    Route::post('/dons/{id}/distribuer', [DonController::class, 'distribuer'])->name('dons.distribuer');
 
     Route::get('/notifications', function () {
         $notifications = Notification::where('user_id', auth()->id())->latest()->get();
@@ -58,11 +68,7 @@ Route::middleware('auth')->group(function () {
         $users = User::latest()->get();
         return view('admin.users', compact('users'));
     })->name('admin.users');
-});
-Route::post('/dons', [DonController::class, 'store'])
-    ->middleware('auth')
-    ->name('dons.store');
-Route::resource('campagnes', CampagneController::class);
 
+});
 
 require __DIR__ . '/auth.php';
