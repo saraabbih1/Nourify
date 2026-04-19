@@ -8,6 +8,9 @@ class Don extends Model
     protected $fillable = [
         'montant',
         'type',
+        'quantite',
+        'unite',
+        'description',
         'statut',
         'donateur_id',
         'campagne_id'

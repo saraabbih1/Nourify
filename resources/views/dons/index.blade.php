@@ -21,7 +21,7 @@
                 <table class="w-full">
                     <thead class="table-head">
                     <tr>
-                        <th class="px-4 py-3">Montant</th>
+                        <th class="px-4 py-3">Valeur du don</th>
                         <th class="px-4 py-3">Type</th>
                         <th class="px-4 py-3">Statut</th>
                         <th class="px-4 py-3">Campagne</th>
@@ -33,7 +33,17 @@
                     <tbody>
                     @forelse($dons as $don)
                         <tr>
-                            <td class="table-cell font-medium">{{ number_format($don->montant, 0, ',', ' ') }} MAD</td>
+                            <td class="table-cell font-medium">
+                                @if($don->type === 'argent')
+                                    {{ number_format((float) $don->montant, 2, ',', ' ') }} MAD
+                                @else
+                                    {{ rtrim(rtrim(number_format((float) ($don->quantite ?? 0), 2, '.', ''), '0'), '.') }}
+                                    {{ $don->unite ?? '' }}
+                                    @if($don->description)
+                                        <span class="block text-xs text-slate-500">{{ $don->description }}</span>
+                                    @endif
+                                @endif
+                            </td>
                             <td class="table-cell">{{ $don->type ?? 'n/a' }}</td>
                             <td class="table-cell">{{ $don->statut ?? 'n/a' }}</td>
                             <td class="table-cell">#{{ $don->campagne_id }}</td>

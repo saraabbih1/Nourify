@@ -18,10 +18,6 @@
                 <form action="{{ route('dons.store') }}" method="POST" class="space-y-4">
                     @csrf
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-slate-700">Montant (MAD)</label>
-                        <input type="number" name="montant" class="field" value="{{ old('montant') }}">
-                    </div>
-                    <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Campagne</label>
                         <select name="campagne_id" class="field">
                             <option value="">Selectionner une campagne</option>
@@ -34,7 +30,7 @@
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Type de don</label>
-                        <select name="type" class="field">
+                        <select id="don-type" name="type" class="field">
                             <option value="">Selectionner le type</option>
                             <option value="argent" @selected(old('type') === 'argent')>Argent</option>
                             <option value="nourriture" @selected(old('type') === 'nourriture')>Nourriture</option>
@@ -42,6 +38,27 @@
                             <option value="autre" @selected(old('type') === 'autre')>Autre</option>
                         </select>
                     </div>
+
+                    <div id="money-fields">
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Montant (MAD)</label>
+                        <input type="number" step="0.01" name="montant" class="field" value="{{ old('montant') }}">
+                    </div>
+
+                    <div id="in-kind-fields" class="hidden space-y-4">
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-slate-700">Quantite</label>
+                            <input type="number" step="0.01" name="quantite" class="field" value="{{ old('quantite') }}" placeholder="Ex: 10">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-slate-700">Unite</label>
+                            <input type="text" name="unite" class="field" value="{{ old('unite') }}" placeholder="kg, piece, carton...">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-slate-700">Description</label>
+                            <textarea name="description" class="field" rows="3" placeholder="Ex: Veste hiver, riz, conserves...">{{ old('description') }}</textarea>
+                        </div>
+                    </div>
+
                     <div class="flex items-center gap-3">
                         <button type="submit" class="btn-primary">Envoyer</button>
                         <a href="{{ route('dons.index') }}" class="btn-muted">Retour</a>
@@ -50,4 +67,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const typeSelect = document.getElementById('don-type');
+            const moneyFields = document.getElementById('money-fields');
+            const inKindFields = document.getElementById('in-kind-fields');
+
+            function toggleFields() {
+                const type = typeSelect.value;
+                const isMoney = type === 'argent' || type === '';
+
+                moneyFields.classList.toggle('hidden', !isMoney);
+                inKindFields.classList.toggle('hidden', isMoney);
+            }
+
+            typeSelect.addEventListener('change', toggleFields);
+            toggleFields();
+        })();
+    </script>
 </x-app-layout>

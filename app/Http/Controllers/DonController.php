@@ -39,14 +39,37 @@ class DonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'montant' => 'required|numeric|min:1',
+            'montant' => 'nullable|numeric|min:1',
             'campagne_id' => 'required|exists:campagnes,id',
-            'type' => 'nullable|string|in:argent,nourriture,vetements,autre',
+            'type' => 'required|string|in:argent,nourriture,vetements,autre',
+            'quantite' => 'nullable|numeric|min:0.01',
+            'unite' => 'nullable|string|max:50',
+            'description' => 'nullable|string|max:1000',
         ]);
 
+        $type = $request->input('type');
+        $isMoney = $type === 'argent';
+
+        if ($isMoney && !$request->filled('montant')) {
+            return back()
+                ->withErrors(['montant' => 'Le montant est obligatoire pour un don en argent.'])
+                ->withInput();
+        }
+
+        if (!$isMoney && (!$request->filled('quantite') || !$request->filled('unite'))) {
+            return back()
+                ->withErrors([
+                    'quantite' => 'Quantite et unite sont obligatoires pour un don en nature.',
+                ])
+                ->withInput();
+        }
+
         $don = Don::create([
-            'montant' => $request->montant,
-            'type' => $request->input('type', 'argent'),
+            'montant' => $isMoney ? $request->montant : null,
+            'type' => $type,
+            'quantite' => $isMoney ? null : $request->quantite,
+            'unite' => $isMoney ? null : $request->unite,
+            'description' => $request->description,
             'campagne_id' => $request->campagne_id,
             'donateur_id' => Auth::id(),
             'statut' => 'propose',
