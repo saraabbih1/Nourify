@@ -6,7 +6,9 @@
                     <h1 class="text-3xl font-semibold text-slate-900">Dons</h1>
                     <p class="mt-1 text-sm text-slate-500">Suivi de tous les dons enregistres.</p>
                 </div>
-                <a href="{{ route('dons.create') }}" class="btn-primary">Proposer un don</a>
+                @if(auth()->user()->hasRole('donateur', 'admin'))
+                    <a href="{{ route('dons.create') }}" class="btn-primary">Proposer un don</a>
+                @endif
             </div>
 
             @if(session('success'))
@@ -20,20 +22,49 @@
                     <thead class="table-head">
                     <tr>
                         <th class="px-4 py-3">Montant</th>
+                        <th class="px-4 py-3">Type</th>
                         <th class="px-4 py-3">Statut</th>
                         <th class="px-4 py-3">Campagne</th>
+                        @if(auth()->user()->hasRole('beneficiaire', 'admin'))
+                            <th class="px-4 py-3">Actions</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
                     @forelse($dons as $don)
                         <tr>
                             <td class="table-cell font-medium">{{ number_format($don->montant, 0, ',', ' ') }} MAD</td>
+                            <td class="table-cell">{{ $don->type ?? 'n/a' }}</td>
                             <td class="table-cell">{{ $don->statut ?? 'n/a' }}</td>
                             <td class="table-cell">#{{ $don->campagne_id }}</td>
+                            @if(auth()->user()->hasRole('beneficiaire', 'admin'))
+                                <td class="table-cell">
+                                    <div class="flex flex-wrap gap-2">
+                                        @if($don->statut === 'propose')
+                                            <form method="POST" action="{{ route('dons.accepter', $don->id) }}">
+                                                @csrf
+                                                <button class="btn-primary" type="submit">Accepter</button>
+                                            </form>
+                                            <form method="POST" action="{{ route('dons.refuser', $don->id) }}">
+                                                @csrf
+                                                <button class="btn-danger" type="submit">Refuser</button>
+                                            </form>
+                                        @elseif($don->statut === 'accepte')
+                                            <form method="POST" action="{{ route('dons.distribuer', $don->id) }}">
+                                                @csrf
+                                                <button class="btn-muted" type="submit">Distribuer</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="table-cell text-center text-slate-500">Aucun don trouve.</td>
+                            <td colspan="{{ auth()->user()->hasRole('beneficiaire', 'admin') ? 5 : 4 }}"
+                                class="table-cell text-center text-slate-500">
+                                Aucun don trouve.
+                            </td>
                         </tr>
                     @endforelse
                     </tbody>

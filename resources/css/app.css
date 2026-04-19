@@ -2,60 +2,195 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --primary: #0f4c81;
+    --primary-soft: #e0edf8;
+    --success: #15803d;
+    --warning: #d97706;
+    --danger: #e11d48;
+    --border: #cbd5e1;
+}
+
+@layer base {
+    body {
+        background: var(--bg);
+        color: var(--text);
+    }
+}
+
 @layer components {
     .page-shell {
-        @apply min-h-screen bg-gradient-to-b from-slate-100 to-slate-200 py-8 px-4 sm:px-6 lg:px-8;
+        @apply min-h-screen px-4 py-8 sm:px-6 lg:px-8;
+        background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
     }
 
     .surface-card {
-        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+        @apply rounded-2xl p-6 shadow-sm;
+        background: var(--surface);
+        border: 1px solid var(--border);
     }
 
     .section-title {
-        @apply text-xl font-semibold text-slate-900;
+        @apply text-xl font-semibold;
+        color: var(--text);
     }
 
     .metric-card {
-        @apply rounded-xl border border-slate-200 bg-white p-5 shadow-sm;
+        @apply rounded-xl p-5 shadow-sm;
+        background: var(--surface);
+        border: 1px solid var(--border);
     }
 
     .metric-label {
-        @apply text-sm font-medium text-slate-500;
+        @apply text-sm font-medium;
+        color: var(--muted);
     }
 
     .metric-value {
-        @apply mt-2 text-2xl font-semibold text-slate-900;
+        @apply mt-2 text-2xl font-semibold;
+        color: var(--text);
     }
 
     .quick-link {
-        @apply rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-blue-50 hover:text-blue-700;
+        @apply rounded-xl px-4 py-3 text-sm font-medium transition;
+        border: 1px solid #bfd7eb;
+        background: var(--primary-soft);
+        color: var(--primary);
+    }
+
+    .quick-link:hover {
+        background: var(--primary);
+        color: #fff;
     }
 
     .table-shell {
-        @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+        @apply overflow-hidden rounded-2xl shadow-sm;
+        background: var(--surface);
+        border: 1px solid var(--border);
     }
 
     .table-head {
-        @apply bg-slate-100 text-left text-xs font-semibold uppercase tracking-wide text-slate-600;
+        @apply text-left text-xs font-semibold uppercase tracking-wide;
+        background: #edf4fb;
+        color: var(--primary);
     }
 
     .table-cell {
-        @apply border-t border-slate-100 px-4 py-3 text-sm text-slate-700;
+        @apply px-4 py-3 text-sm;
+        color: var(--text);
+        border-top: 1px solid #e2e8f0;
     }
 
     .btn-primary {
-        @apply inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700;
+        @apply inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white transition;
+        background: var(--primary);
+    }
+
+    .btn-primary:hover {
+        background: #0b3a63;
     }
 
     .btn-muted {
-        @apply inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50;
+        @apply inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition;
+        border: 1px solid #f2c78a;
+        background: #fff7ed;
+        color: var(--warning);
+    }
+
+    .btn-muted:hover {
+        background: #ffedd5;
     }
 
     .btn-danger {
-        @apply inline-flex items-center rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700;
+        @apply inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white transition;
+        background: var(--danger);
+    }
+
+    .btn-danger:hover {
+        background: #be123c;
     }
 
     .field {
-        @apply w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200;
+        @apply w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2;
+        background: #fff;
+        color: var(--text);
+        border: 1px solid #cbd5e1;
     }
+
+    .field::placeholder {
+        color: #94a3b8;
+    }
+
+    .field:focus {
+        border-color: var(--primary);
+        --tw-ring-color: rgb(15 76 129 / 0.2);
+    }
+}
+
+/* Global remap for existing classes in blades */
+.bg-slate-100,
+.bg-white {
+    background-color: var(--surface) !important;
+}
+
+.border-slate-200 {
+    border-color: var(--border) !important;
+}
+
+.text-slate-900,
+.text-slate-800 {
+    color: var(--text) !important;
+}
+
+.text-slate-700,
+.text-slate-600,
+.text-slate-500 {
+    color: var(--muted) !important;
+}
+
+.bg-blue-50,
+.bg-blue-100 {
+    background-color: var(--primary-soft) !important;
+}
+
+.text-blue-700,
+.text-blue-600 {
+    color: var(--primary) !important;
+}
+
+.bg-green-50 {
+    background-color: #dcfce7 !important;
+}
+
+.text-green-700 {
+    color: var(--success) !important;
+}
+
+.border-green-200 {
+    border-color: #86efac !important;
+}
+
+.bg-red-50 {
+    background-color: #ffe4e6 !important;
+}
+
+.text-red-700 {
+    color: var(--danger) !important;
+}
+
+.border-red-200 {
+    border-color: #fda4af !important;
+}
+
+nav {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+}
+
+nav a.text-xl {
+    color: var(--text) !important;
 }

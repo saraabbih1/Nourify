@@ -27,13 +27,15 @@
            class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('historique.*') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
             Historique
         </a>
-        <a href="{{ route('admin.index') }}"
-           class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('admin.index') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
-            Admin
-        </a>
-        <a href="{{ route('admin.users') }}"
-           class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('admin.users') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
-            Users
-        </a>
+        @if(auth()->user()->hasRole('admin'))
+            <a href="{{ route('admin.index') }}"
+               class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('admin.index') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
+                Admin
+            </a>
+            <a href="{{ route('admin.users') }}"
+               class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('admin.users') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
+                Users
+            </a>
+        @endif
     </nav>
 </aside>
