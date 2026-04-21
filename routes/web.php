@@ -29,7 +29,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin', [DashboardController::class, 'admin'])->name('admin.index');
     Route::get('/admin/users', [DashboardController::class, 'adminUsers'])->name('admin.users');
 
-    Route::resource('campagnes', CampagneController::class);
+    Route::get('/campagnes', [CampagneController::class, 'index'])->name('campagnes.index');
+    Route::get('/campagnes/create', [CampagneController::class, 'create'])->name('campagnes.create');
+    Route::post('/campagnes', [CampagneController::class, 'store'])->name('campagnes.store');
+    Route::get('/campagnes/{id}', [CampagneController::class, 'show'])
+        ->whereNumber('id')
+        ->name('campagnes.show');
+    Route::get('/campagnes/{id}/edit', [CampagneController::class, 'edit'])
+        ->whereNumber('id')
+        ->name('campagnes.edit');
+    Route::match(['put', 'patch'], '/campagnes/{id}', [CampagneController::class, 'update'])
+        ->whereNumber('id')
+        ->name('campagnes.update');
+    Route::delete('/campagnes/{id}', [CampagneController::class, 'destroy'])
+        ->whereNumber('id')
+        ->name('campagnes.destroy');
 
     Route::get('/dons', [DonController::class, 'index'])->name('dons.index');
     Route::get('/dons/create', [DonController::class, 'create'])->name('dons.create');
