@@ -46,7 +46,9 @@
                             </td>
                             <td class="table-cell">{{ $don->type ?? 'n/a' }}</td>
                             <td class="table-cell">{{ $don->statut ?? 'n/a' }}</td>
-                            <td class="table-cell">#{{ $don->campagne_id }}</td>
+                            <td class="table-cell">
+                                {{ $don->campagne?->titre ?? ('Campagne #' . $don->campagne_id) }}
+                            </td>
                             @if(auth()->user()->hasRole('beneficiaire', 'admin'))
                                 <td class="table-cell">
                                     <div class="flex flex-wrap gap-2">
