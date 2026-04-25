@@ -7,6 +7,18 @@
                 <p class="mt-4 text-sm font-medium text-slate-500">
                     Objectif: {{ number_format($campagne->objectif, 0, ',', ' ') }} MAD
                 </p>
+                <p class="mt-2 text-sm font-medium text-slate-500">
+                    Montant collecte: {{ number_format($campagne->montant_collecte, 0, ',', ' ') }} MAD
+                </p>
+                <p class="mt-2 text-sm font-medium {{ $campagne->statut === 'objectif_atteint' ? 'text-green-600' : 'text-slate-500' }}">
+                    Statut: {{ $campagne->statut === 'objectif_atteint' ? 'Objectif atteint' : 'Active' }}
+                </p>
+
+                @if($campagne->statut === 'objectif_atteint')
+                    <div class="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                        Cette campagne a atteint son objectif. Merci pour votre soutien.
+                    </div>
+                @endif
             </div>
 
             <div class="surface-card">

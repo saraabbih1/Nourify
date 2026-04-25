@@ -21,6 +21,8 @@
                     <tr>
                         <th class="px-4 py-3">Titre</th>
                         <th class="px-4 py-3">Objectif</th>
+                        <th class="px-4 py-3">Collecte</th>
+                        <th class="px-4 py-3">Statut</th>
                         <th class="px-4 py-3">Actions</th>
                     </tr>
                     </thead>
@@ -29,6 +31,10 @@
                         <tr>
                             <td class="table-cell font-medium">{{ $campagne->titre }}</td>
                             <td class="table-cell">{{ number_format($campagne->objectif, 0, ',', ' ') }} MAD</td>
+                            <td class="table-cell">{{ number_format($campagne->montant_collecte, 0, ',', ' ') }} MAD</td>
+                            <td class="table-cell">
+                                {{ $campagne->statut === 'objectif_atteint' ? 'Objectif atteint' : 'Active' }}
+                            </td>
                             <td class="table-cell">
                                 <div class="flex flex-wrap gap-2">
                                     <a href="{{ route('campagnes.show', $campagne->id) }}" class="btn-muted">Voir</a>
@@ -43,7 +49,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="table-cell text-center text-slate-500">Aucune campagne trouvee.</td>
+                            <td colspan="5" class="table-cell text-center text-slate-500">Aucune campagne trouvee.</td>
                         </tr>
                     @endforelse
                     </tbody>
