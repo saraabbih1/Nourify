@@ -33,6 +33,13 @@
                     Users
                 </a>
             @endif
+
+            <form method="POST" action="{{ route('logout') }}" class="ms-2">
+                @csrf
+                <button type="submit" class="btn-danger">
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </nav>
