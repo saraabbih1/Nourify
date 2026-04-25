@@ -23,10 +23,13 @@
                             <option value="">Selectionner une campagne</option>
                             @foreach($campagnes as $campagne)
                                 <option value="{{ $campagne->id }}" @selected(old('campagne_id') == $campagne->id)>
-                                    {{ $campagne->titre }}
+                                    {{ $campagne->titre }} - {{ number_format($campagne->montant_collecte, 0, ',', ' ') }}/{{ number_format($campagne->objectif, 0, ',', ' ') }} MAD
                                 </option>
                             @endforeach
                         </select>
+                        @if($campagnes->isEmpty())
+                            <p class="mt-2 text-sm text-slate-500">Aucune campagne active disponible pour le moment.</p>
+                        @endif
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Type de don</label>
