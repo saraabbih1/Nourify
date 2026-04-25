@@ -32,7 +32,7 @@ class DonController extends Controller
 
     public function create()
     {
-        $campagnes = Campagne::latest()->get();
+        $campagnes = Campagne::where('statut', 'active')->latest()->get();
         return view('dons.create', compact('campagnes'));
     }
 
@@ -49,6 +49,13 @@ class DonController extends Controller
 
         $type = $request->input('type');
         $isMoney = $type === 'argent';
+        $campagne = Campagne::findOrFail($request->campagne_id);
+
+        if ($campagne->statut !== 'active') {
+            return back()
+                ->withErrors(['campagne_id' => 'Cette campagne a deja atteint son objectif.'])
+                ->withInput();
+        }
 
         if ($isMoney && !$request->filled('montant')) {
             return back()
@@ -121,6 +128,7 @@ class DonController extends Controller
         }
 
         $don->update(['statut' => 'accepte']);
+        $this->synchroniseCampagneAfterAcceptance($don);
 
         Notification::create([
             'message' => 'Votre don a ete accepte',
@@ -218,5 +226,39 @@ class DonController extends Controller
         }
 
         return $user;
+    }
+
+    private function synchroniseCampagneAfterAcceptance(Don $don): void
+    {
+        $campagne = $don->campagne;
+
+        if (!$campagne || $don->type !== 'argent') {
+            return;
+        }
+
+        $acceptedAmount = (float) Don::query()
+            ->where('campagne_id', $campagne->id)
+            ->where('statut', 'accepte')
+            ->where('type', 'argent')
+            ->sum('montant');
+
+        $updates = ['montant_collecte' => $acceptedAmount];
+
+        if ($campagne->statut === 'active' && $acceptedAmount >= (float) $campagne->objectif) {
+            $updates['statut'] = 'objectif_atteint';
+
+            Notification::create([
+                'message' => 'Votre campagne "' . $campagne->titre . '" a atteint son objectif.',
+                'user_id' => $campagne->beneficiaire_id,
+                'lu' => false,
+            ]);
+
+            HistoriqueAction::create([
+                'action' => 'Objectif atteint pour la campagne: ' . $campagne->titre,
+                'user_id' => Auth::id(),
+            ]);
+        }
+
+        $campagne->update($updates);
     }
 }
