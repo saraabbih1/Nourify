@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Connexion</p>
-        <h2 class="auth-heading">Rebienvenue.</h2>
+        <h2 class="auth-heading">Bienvenue.</h2>
         <p class="auth-subtitle">Connecte-toi pour suivre tes dons, tes campagnes, et les actions recentes.</p>
     </div>
 

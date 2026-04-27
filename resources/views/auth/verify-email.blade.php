@@ -1,8 +1,8 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Verification</p>
-        <h2 class="auth-heading">Verifie ton email.</h2>
-        <p class="auth-subtitle">Khassna n2akdo l'adresse dyalek bach tkمل l-access l-platforme b amane.</p>
+        <h2 class="auth-heading">Verifiez votre adresse email.</h2>
+        <p class="auth-subtitle">Nous devons confirmer votre adresse email pour finaliser l'acces a la plateforme en toute securite.</p>
     </div>
 
     <div class="auth-note mb-5">

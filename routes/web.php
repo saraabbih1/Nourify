@@ -25,9 +25,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', [UserController::class, 'notificationsIndex'])->name('notifications.index');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/historique', [DashboardController::class, 'historique'])->name('historique.index');
-    Route::get('/admin', [DashboardController::class, 'admin'])->name('admin.index');
-    Route::get('/admin/users', [DashboardController::class, 'adminUsers'])->name('admin.users');
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/historique', [DashboardController::class, 'historique'])->name('historique.index');
+        Route::get('/admin', [DashboardController::class, 'admin'])->name('admin.index');
+        Route::get('/admin/users', [DashboardController::class, 'adminUsers'])->name('admin.users');
+        Route::patch('/admin/users/{user}/role', [DashboardController::class, 'updateUserRole'])->name('admin.users.role');
+    });
 
     Route::get('/campagnes', [CampagneController::class, 'index'])->name('campagnes.index');
     Route::get('/campagnes/create', [CampagneController::class, 'create'])->name('campagnes.create');

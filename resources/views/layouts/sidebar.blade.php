@@ -23,11 +23,11 @@
            class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('notifications.*') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
             Notifications
         </a>
-        <a href="{{ route('historique.index') }}"
-           class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('historique.*') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
-            Historique
-        </a>
         @if(auth()->user()->hasRole('admin'))
+            <a href="{{ route('historique.index') }}"
+               class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('historique.*') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
+                Historique
+            </a>
             <a href="{{ route('admin.index') }}"
                class="block rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('admin.index') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100' }}">
                 Admin

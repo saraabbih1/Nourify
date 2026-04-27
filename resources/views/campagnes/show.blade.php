@@ -19,6 +19,14 @@
                         Cette campagne a atteint son objectif. Merci pour votre soutien.
                     </div>
                 @endif
+
+                <div class="mt-5 flex flex-wrap gap-3">
+                    @if($campagne->beneficiaire_id === auth()->id())
+                        <a href="{{ route('campagnes.edit', $campagne->id) }}" class="btn-muted">Modifier la campagne</a>
+                    @elseif($campagne->statut === 'active')
+                        <a href="{{ route('dons.create', ['campagne_id' => $campagne->id]) }}" class="btn-primary">Faire un don</a>
+                    @endif
+                </div>
             </div>
 
             <div class="surface-card">

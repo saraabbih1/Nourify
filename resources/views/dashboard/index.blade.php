@@ -38,9 +38,11 @@
                     <a href="{{ route('campagnes.index') }}" class="quick-link">Campagnes</a>
                     <a href="{{ route('dons.index') }}" class="quick-link">Dons</a>
                     <a href="{{ route('notifications.index') }}" class="quick-link">Notifications</a>
-                    <a href="{{ route('historique.index') }}" class="quick-link">Historique</a>
-                    <a href="{{ route('admin.index') }}" class="quick-link">Admin</a>
-                    <a href="{{ route('admin.users') }}" class="quick-link">Users</a>
+                    @if(auth()->user()->hasRole('admin'))
+                        <a href="{{ route('historique.index') }}" class="quick-link">Historique</a>
+                        <a href="{{ route('admin.index') }}" class="quick-link">Admin</a>
+                        <a href="{{ route('admin.users') }}" class="quick-link">Users</a>
+                    @endif
                 </div>
             </div>
         </div>

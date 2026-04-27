@@ -1,8 +1,8 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Confirmation</p>
-        <h2 class="auth-heading">Akked mot de passe dyalek.</h2>
-        <p class="auth-subtitle">Hadi zone securisee, donc khassna confirmation qbl ma nkemlou.</p>
+        <h2 class="auth-heading">Confirmez votre mot de passe.</h2>
+        <p class="auth-subtitle">Cette zone est securisee. Merci de confirmer votre mot de passe pour continuer.</p>
     </div>
 
     <div class="auth-note mb-5">

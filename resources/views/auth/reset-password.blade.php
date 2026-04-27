@@ -1,8 +1,8 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Reset</p>
-        <h2 class="auth-heading">Khtar mot de passe jdida.</h2>
-        <p class="auth-subtitle">Rjja3 l-access dyalek b mot de passe amna w sahla ttfakar.</p>
+        <h2 class="auth-heading">Choisissez un nouveau mot de passe.</h2>
+        <p class="auth-subtitle">Recuperez l'acces a votre compte avec un mot de passe securise et facile a retenir.</p>
     </div>
 
     <form method="POST" action="{{ route('password.store') }}" class="auth-form">

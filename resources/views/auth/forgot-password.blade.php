@@ -1,8 +1,8 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Recuperation</p>
-        <h2 class="auth-heading">Nsiti mot de passe?</h2>
-        <p class="auth-subtitle">Ma kaynch mochkil. Dkhel email dyalek w ghadi nsefto lik lien bach t3awed tdir mot de passe jdida.</p>
+        <h2 class="auth-heading">Mot de passe oublie ?</h2>
+        <p class="auth-subtitle">Aucun probleme. Entrez votre adresse email et nous vous enverrons un lien pour reinitialiser votre mot de passe.</p>
     </div>
 
     <div class="auth-note mb-5">

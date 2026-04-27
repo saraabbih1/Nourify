@@ -38,12 +38,16 @@
                             <td class="table-cell">
                                 <div class="flex flex-wrap gap-2">
                                     <a href="{{ route('campagnes.show', $campagne->id) }}" class="btn-muted">Voir</a>
-                                    <a href="{{ route('campagnes.edit', $campagne->id) }}" class="btn-muted">Edit</a>
-                                    <form method="POST" action="{{ route('campagnes.destroy', $campagne->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-danger">Delete</button>
-                                    </form>
+                                    @if($campagne->beneficiaire_id === auth()->id())
+                                        <a href="{{ route('campagnes.edit', $campagne->id) }}" class="btn-muted">Edit</a>
+                                        <form method="POST" action="{{ route('campagnes.destroy', $campagne->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-danger">Delete</button>
+                                        </form>
+                                    @elseif($campagne->statut === 'active')
+                                        <a href="{{ route('dons.create', ['campagne_id' => $campagne->id]) }}" class="btn-primary">Faire un don</a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

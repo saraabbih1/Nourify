@@ -22,7 +22,8 @@
                         <select name="campagne_id" class="field">
                             <option value="">Selectionner une campagne</option>
                             @foreach($campagnes as $campagne)
-                                <option value="{{ $campagne->id }}" @selected(old('campagne_id') == $campagne->id)>
+                                <option value="{{ $campagne->id }}"
+                                    @selected((string) old('campagne_id', request('campagne_id')) === (string) $campagne->id)>
                                     {{ $campagne->titre }} - {{ number_format($campagne->montant_collecte, 0, ',', ' ') }}/{{ number_format($campagne->objectif, 0, ',', ' ') }} MAD
                                 </option>
                             @endforeach

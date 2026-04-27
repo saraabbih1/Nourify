@@ -6,7 +6,7 @@
                     <h1 class="text-3xl font-semibold text-slate-900">Dons</h1>
                     <p class="mt-1 text-sm text-slate-500">Suivi de tous les dons enregistres.</p>
                 </div>
-                @if(auth()->user()->hasRole('donateur', 'admin'))
+                @if(auth()->check())
                     <a href="{{ route('dons.create') }}" class="btn-primary">Proposer un don</a>
                 @endif
             </div>

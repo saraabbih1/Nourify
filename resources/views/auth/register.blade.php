@@ -1,8 +1,8 @@
 <x-guest-layout>
     <div class="auth-header">
         <p class="auth-badge">Inscription</p>
-        <h2 class="auth-heading">Creer ton espace.</h2>
-        <p class="auth-subtitle">Sajjel bach tbda ttsayb dons, ttab3 campagnes, w tdkhol l plateforme بسهولة.</p>
+        <h2 class="auth-heading">Creez votre espace.</h2>
+        <p class="auth-subtitle">Inscrivez-vous pour commencer a gerer vos dons, suivre les campagnes et acceder a la plateforme facilement.</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="auth-form">
