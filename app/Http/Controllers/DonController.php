@@ -32,7 +32,11 @@ class DonController extends Controller
 
     public function create()
     {
-        $campagnes = Campagne::where('statut', 'active')->latest()->get();
+        $campagnes = Campagne::where('statut', 'active')
+            ->where('beneficiaire_id', '!=', Auth::id())
+            ->latest()
+            ->get();
+
         return view('dons.create', compact('campagnes'));
     }
 
@@ -50,6 +54,12 @@ class DonController extends Controller
         $type = $request->input('type');
         $isMoney = $type === 'argent';
         $campagne = Campagne::findOrFail($request->campagne_id);
+
+        if ($campagne->beneficiaire_id === Auth::id()) {
+            return back()
+                ->withErrors(['campagne_id' => 'Vous ne pouvez pas faire un don a votre propre campagne.'])
+                ->withInput();
+        }
 
         if ($campagne->statut !== 'active') {
             return back()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campagne;
 use App\Models\HistoriqueAction;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,15 +34,24 @@ class CampagneController extends Controller
             'objectif' => 'required|numeric',
         ]);
 
-        Campagne::create([
+        $campagne = Campagne::create([
             'titre' => $request->titre,
             'description' => $request->description,
             'objectif' => $request->objectif,
             'beneficiaire_id' => Auth::id(),
         ]);
 
+        $user = Auth::user();
+        if ($user && !$user->hasRole('admin')) {
+            $beneficiaireRoleId = Role::where('name', 'beneficiaire')->value('id');
+
+            if ($beneficiaireRoleId && $user->role_id !== $beneficiaireRoleId) {
+                $user->update(['role_id' => $beneficiaireRoleId]);
+            }
+        }
+
         HistoriqueAction::create([
-            'action' => 'Creation campagne',
+            'action' => 'Creation campagne: ' . $campagne->titre,
             'user_id' => Auth::id(),
         ]);
 
@@ -63,12 +73,14 @@ class CampagneController extends Controller
     public function edit($id)
     {
         $campagne = Campagne::findOrFail($id);
+        $this->ensureCampagneOwner($campagne);
         return view('campagnes.edit', compact('campagne'));
     }
 
     public function update(Request $request, $id)
     {
         $campagne = Campagne::findOrFail($id);
+        $this->ensureCampagneOwner($campagne);
 
         $request->validate([
             'titre' => 'required',
@@ -88,9 +100,18 @@ class CampagneController extends Controller
 
     public function destroy($id)
     {
-        Campagne::destroy($id);
+        $campagne = Campagne::findOrFail($id);
+        $this->ensureCampagneOwner($campagne);
+        $campagne->delete();
 
         return redirect()->route('campagnes.index')
             ->with('success', 'Campagne supprimee avec succes');
+    }
+
+    private function ensureCampagneOwner(Campagne $campagne): void
+    {
+        if ($campagne->beneficiaire_id !== Auth::id()) {
+            abort(403);
+        }
     }
 }

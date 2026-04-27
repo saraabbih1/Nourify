@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Campagne;
 use App\Models\Don;
 use App\Models\HistoriqueAction;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -40,7 +43,37 @@ class DashboardController extends Controller
 
     public function adminUsers()
     {
-        $users = User::latest()->get();
-        return view('admin.users', compact('users'));
+        $users = User::with('role')
+            ->whereKeyNot(request()->user()->id)
+            ->latest()
+            ->get();
+
+        $roles = Role::whereIn('name', ['donateur', 'beneficiaire', 'admin'])->get();
+
+        return view('admin.users', compact('users', 'roles'));
+    }
+
+    public function updateUserRole(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'role_id' => ['required', 'exists:roles,id'],
+        ]);
+
+        if ($request->user()->id === $user->id) {
+            return redirect()->route('admin.users')
+                ->with('error', 'Vous ne pouvez pas modifier votre propre role.');
+        }
+
+        $user->update([
+            'role_id' => $request->integer('role_id'),
+        ]);
+
+        HistoriqueAction::create([
+            'action' => 'Role modifie pour user: ' . $user->email,
+            'user_id' => $request->user()->id,
+        ]);
+
+        return redirect()->route('admin.users')
+            ->with('success', 'Role mis a jour avec succes.');
     }
 }
